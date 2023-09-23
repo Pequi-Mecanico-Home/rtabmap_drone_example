@@ -277,20 +277,7 @@
   </gazebo>
 
 
-  <!-- Import macro for realsense-RS200 camera-->
-  <xacro:include filename="$(find rtabmap_drone_example)/urdf/realsense-RS200.macro.xacro"/>
-    
-  <joint name="base_camera_joint" type="fixed">
-    <origin xyz="${scale*0.1} 0 0" rpy="0 0 0" /> 
-    <parent link="base_link"/>
-    <child link="base_camera" />
-  </joint>
-
-  <link name='base_camera'/>
-
-  <!-- Create camera instance -->
-  <xacro:realsense-rs200 prefix="" parent="base_camera">
-        <origin xyz="0 0 0" rpy="0 0 0" />   
-  </xacro:realsense-rs200>
+  <!-- Include d435i xacro file -->
+  <xacro:include filename="$(find rtabmap_drone_example)/urdf/_d435.urdf.xacro"/>
 
 </robot>

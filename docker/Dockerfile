@@ -45,8 +45,7 @@ RUN source /ros_entrypoint.sh && \
     cd ~/catkin_ws/src && \
     catkin_init_workspace && \
     git clone https://github.com/mavlink/mavros.git && \
-    git clone https://github.com/SyrianSpock/realsense_gazebo_plugin.git && \
-    echo "install(DIRECTORY models DESTINATION \${CATKIN_PACKAGE_SHARE_DESTINATION})" >> realsense_gazebo_plugin/CMakeLists.txt && \
+    git clone -b melodic-devel https://github.com/Pequi-Mecanico-Home/realsense_gazebo_plugin.git && \
     cd mavros && \
     git checkout 1.9.0 && \
     ./mavros/scripts/install_geographiclib_datasets.sh && \
@@ -78,6 +77,19 @@ RUN echo "#!/bin/bash" >> /entrypoint.sh && \
     echo "export GAZEBO_MODEL_PATH=\$GAZEBO_MODEL_PATH:/opt/ros/noetic/share/realsense_gazebo_plugin/models" >> /entrypoint.sh && \
     echo "exec \"\$@\"" >> /entrypoint.sh && \
     chmod +x /entrypoint.sh
+
+RUN apt-get update && apt-get install ros-noetic-teleop-twist-keyboard nano
+
+WORKDIR /worlds
+
+
+RUN git clone https://github.com/Pequi-Mecanico-Home/mrs_gazebo_common_resources && \
+    git clone https://github.com/Pequi-Mecanico-Home/Petrobras_Competition && \
+    # Copy model files to Gazebo Directory
+    cp -r /worlds/Petrobras_Competition/models /usr/share/gazebo-11/ && \
+    cp -r /worlds/mrs_gazebo_common_resources/models /usr/share/gazebo-11/
     
+# RUN echo "source /entrypoint.sh" >> ~/.bashrc
+
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["bash"]
